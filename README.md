@@ -16,11 +16,12 @@ python3 analyzer.py /var/log/auth.log --threshold 10 --window 5 --format json
 Flags: `--threshold` min failures, `--window` burst window (minutes), `--format table|json|csv`.
 
 ## Sample output
+```
 IP               FAILS  PEAK USERS  FIRST               LAST                COMPROMISED?
 203.0.113.45        12    12    10  2026-10-25 03:12:00 2026-10-25 03:12:33 !!! YES
 198.51.100.23        7     1     1  2026-10-25 08:05:00 2026-10-25 14:05:00 !!! YES
-
-## Limitations (be honest)
+```
+## Limitations
 - Syslog timestamps have no year; pass `--year`.
 - Only OpenSSH password failures. No key-auth, no `lastb`, no journald.
 - Thresholds are static; real tooling baselines per environment.
