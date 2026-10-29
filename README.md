@@ -44,8 +44,29 @@ If any one condition fails, the IP may still be listed as suspicious, but it is 
 - Sample log is synthetic (RFC 5737 documentation IPs).
 - Rule 1 has no time limit: a login hours after the last failure still counts as compromise.
 
+## Real-data test
+The analyzer was also run on the `OpenSSH_2k.log` sample from [Loghub](https://github.com/logpai/loghub), real logs collected from an OpenSSH server in a lab over 28+ days. The log has no year, so `--year 2015` was passed as an assumed value. The dataset is not redistributed in this repo.
+
+Citation: Jieming Zhu, Shilin He, Pinjia He, Jinyang Liu, Michael R. Lyu. *Loghub: A Large Collection of System Log Datasets for AI-driven Log Analytics.* IEEE International Symposium on Software Reliability Engineering (ISSRE), 2023.
+
+**Result:** 10 IPs were flagged and none were marked compromised. The sample contains a single successful login, from an IP that was not flagged, so the success-after-failures check is only demonstrated on the synthetic `sample_auth.log`.
+
+```
+IP               FAILS  PEAK USERS  FIRST               LAST                COMPROMISED?
+183.62.140.xxx    286   279    10  2015-12-10 10:54:29 2015-12-10 11:04:43  no
+187.141.143.xxx    80    80    28  2015-12-10 09:12:48 2015-12-10 09:20:02  no
+103.99.0.xxx       46    30    19  2015-12-10 09:11:21 2015-12-10 11:04:45  no
+112.95.230.xxx     26    26     3  2015-12-10 07:27:52 2015-12-10 07:28:51  no
+5.188.10.xxx       17    17     6  2015-12-10 08:24:45 2015-12-10 08:26:24  no
+185.190.58.xxx     17    17     3  2015-12-10 09:07:58 2015-12-10 09:12:59  no
+123.235.32.xxx     7     7      1  2015-12-10 07:32:27 2015-12-10 07:34:23  no
+119.4.203.xxx      6     6      1  2015-12-10 10:14:01 2015-12-10 10:14:13  no
+52.80.34.xxx       5     1      3  2015-12-10 07:07:45 2015-12-10 10:21:09  no
+60.2.12.xxx        5     5      1  2015-12-10 10:04:54 2015-12-10 10:05:22  no
+```
+
+10 IP(s) flagged. 0 non-sshd/unparsed lines skipped.
 ## Next
-- Test against a real internet-facing auth.log
 - GeoIP/ASN enrichment
 - AbuseIPDB lookup
 - Support for key-based logins and journald
